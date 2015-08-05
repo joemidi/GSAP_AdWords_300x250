@@ -17,23 +17,24 @@ Using the same syntax we can load up the JS in the same manner.
 ```
 104	  <script data-source="assets/TweenMax.min.js" data-version="1.17.0" type="text/javascript" src="assets/TweenMax.min.js"></script>
 ```
+When you publish this, GWD copies the code from that JS file and puts it inline in the *index.html*.
 
 ## Run the animation
-A GWD banner will start when it's ready to fire off this function `gwdAd.initAd();` on line 144. So we'll put a call to our GSAP animation after that.
+After testing the published file TweenMax doesn't like being called from the self-invoked function, so I created the TL outside the function whilst paused. On line:126
 
 ```
 //Starting from line 152
-function animateBanner() {
-	var tl = new TimelineLite();
-	tl.from(['#joe_midi', '#balloons'], 1.5, {
-	    alpha: 0
-	  })
-	  .to('#balloons', 1, {
-	    y: "-=200"
-	  })
-	  .staggerFrom(['#copy1', '#copy2', '#copy3'], 1.5, {
-	    x: "-=250",
-	    ease: Elastic.easeOut.config(1, 0.3)
-	  }, 0.5);
-}
+var tl = new TimelineLite({paused:true});
+tl.from(['#joe_midi', '#balloons'], 1.5, {
+  alpha: 0
+})
+.to('#balloons', 1, {
+  y: "-=200"
+})
+.staggerFrom(['#copy1', '#copy2', '#copy3'], 1.5, {
+  x: "-=250",
+  ease: Elastic.easeOut.config(1, 0.3)
+}, 0.5);
 ```
+
+and then calling a *tl.play();* on line 174

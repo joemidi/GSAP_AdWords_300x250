@@ -120,6 +120,21 @@
     </div>
   </gwd-doubleclick>
   <script type="text/javascript" id="gwd-init-code">
+    /**
+      * Lets put all our animation in one block to use
+      */
+    var tl = new TimelineLite({paused:true});
+    tl.from(['#joe_midi', '#balloons'], 1.5, {
+      alpha: 0
+    })
+    .to('#balloons', 1, {
+      y: "-=200"
+    })
+    .staggerFrom(['#copy1', '#copy2', '#copy3'], 1.5, {
+      x: "-=250",
+      ease: Elastic.easeOut.config(1, 0.3)
+    }, 0.5);
+    
     (function() {
       document.body.style.opacity = "0";
       var gwdAd = document.getElementById('gwd-ad');
@@ -142,25 +157,9 @@
         // Start the Ad lifecycle.
         setTimeout(function() {
           gwdAd.initAd();
-          animateBanner();
         }, 0);
       }
 
-      /**
-       * Lets put all our animation in one block to use
-       */
-      function animateBanner() {
-        var tl = new TimelineLite();
-        tl.from(['#joe_midi', '#balloons'], 1.5, {
-            alpha: 0
-          })
-          .to('#balloons', 1, {
-            y: "-=200"
-          })
-          .staggerFrom(['#copy1', '#copy2', '#copy3'], 1.5, {
-            x: "-=250", ease: Elastic.easeOut.config(1, 0.3)
-          }, 0.5);
-      }
 
       /**
        * Handles the event that is dispatched after the Ad has been
@@ -170,6 +169,9 @@
         // This marks the end of the polite load phase of the Ad. If a
         // loading image was shown to the user, this is a good place to
         // remove it.
+        
+        //Start banner from here?
+        tl.restart();
       }
 
       window.addEventListener('DOMContentLoaded',
